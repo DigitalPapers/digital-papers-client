@@ -8,7 +8,7 @@ export function AuthProvider({ children, userData }) {
   const [user, setUser] = useLocalStorage("user", userData);
   const navigate = useNavigate();
 
-  const login = async (data) => {
+  const login = (data) => {
     // TODO: Make validations to sent data to server
     setUser(data);
     navigate("/", { replace: true });
