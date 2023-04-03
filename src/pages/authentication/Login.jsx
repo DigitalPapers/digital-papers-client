@@ -23,24 +23,9 @@ import {
 
 import { EyeOutlined, EyeInvisibleOutlined, LockOutlined } from '@ant-design/icons';
 import { useAuth } from "../../hooks/AuthProvider";
+import Copyright from "../../components/Copyright";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://fromchiapas.dev">
-        FromChiapasDev
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Debe ser un correo valido').max(255).required('Email es requerido'),
