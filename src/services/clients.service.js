@@ -9,13 +9,14 @@ export function ClientsService() {
     return response.data;
   }
 
-  async function get({ id }) {
-    console.log(id);
+  async function get({ userId }) {
+    console.log("Request", userId);
     // create request to localhost with axios
     const response = await axios.get(
-      `http://test-domain.test:8008/users/${id}`
+      `http://test-domain.test:8008/users/${userId}`
     );
-    return { client: response.data };
+    return response.data;
   }
+
   return { list, get };
 }

@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import React from "react";
 import EnhancedTable from "../components/table/Table";
 import { ClientsService } from "../services/clients.service";
@@ -5,6 +6,10 @@ import { ClientsService } from "../services/clients.service";
 function Customers() {
   const columns = React.useMemo(
     () => [
+      {
+        Header: "ID",
+        accessor: "id",
+      },
       {
         Header: "RFC",
         accessor: "rfc",
@@ -43,7 +48,7 @@ function Customers() {
   }, []);
 
   return (
-    <div>
+    <Box>
       <EnhancedTable
         columns={columns}
         data={data}
@@ -56,10 +61,10 @@ function Customers() {
         link={{
           isLink: true,
           goToLink: ":id/files",
-          identifier: "rfc",
+          identifier: "id",
         }}
       />
-    </div>
+    </Box>
   );
 }
 

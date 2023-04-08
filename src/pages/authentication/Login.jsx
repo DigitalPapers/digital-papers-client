@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { Link as RouterLink } from 'react-router-dom';
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { Link as RouterLink } from "react-router-dom";
 // material-ui
 import {
   Button,
@@ -18,22 +18,26 @@ import {
   InputLabel,
   OutlinedInput,
   Stack,
-  Typography
-} from '@mui/material';
+  Typography,
+} from "@mui/material";
 
-import { EyeOutlined, EyeInvisibleOutlined, LockOutlined } from '@ant-design/icons';
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
 import { useAuth } from "../../hooks/AuthProvider";
 import Copyright from "../../components/Copyright";
 
-
-
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email('Debe ser un correo valido').max(255).required('Email es requerido'),
-  password: Yup.string().max(255).required('Contraseña es requerido'),
+  email: Yup.string()
+    .email("Debe ser un correo valido")
+    .max(255)
+    .required("Email es requerido"),
+  password: Yup.string().max(255).required("Contraseña es requerido"),
 });
 
 export default function Login() {
-  const { login } = useAuth()
+  const { login } = useAuth();
   const [checked, setChecked] = React.useState(false);
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -50,14 +54,14 @@ export default function Login() {
     try {
       setStatus({ success: false });
       setSubmitting(true);
-      console.log('Values form', values)
-      login({ email: values.email, password: values.password })
+      console.log("Values form", values);
+      login({ email: values.email, password: values.password });
     } catch (err) {
       setStatus({ success: false });
       setErrors({ submit: err.message });
       setSubmitting(false);
     }
-  }
+  };
 
   return (
     <Container component="main" maxWidth="sm">
@@ -66,25 +70,33 @@ export default function Login() {
           marginTop: 8,
           display: "flex",
           flexDirection: "column",
-          alignItems: "center"
+          alignItems: "center",
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlined />
+          <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Iniciar sesión
         </Typography>
         <Formik
           initialValues={{
-            email: 'pruebadashboard@fromchiapas.dev',
-            password: 'pruebaDashboard',
-            submit: null
+            email: "pruebadashboard@fromchiapas.dev",
+            password: "pruebaDashboard",
+            submit: null,
           }}
           validationSchema={validationSchema}
           onSubmit={onSubmitForm}
         >
-          {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+          {({
+            errors,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+            isSubmitting,
+            touched,
+            values,
+          }) => (
             <form noValidate onSubmit={handleSubmit}>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
@@ -102,9 +114,7 @@ export default function Login() {
                       error={Boolean(touched.email && errors.email)}
                     />
                     {touched.email && errors.email && (
-                      <FormHelperText error>
-                        {errors.email}
-                      </FormHelperText>
+                      <FormHelperText error>{errors.email}</FormHelperText>
                     )}
                   </Stack>
                 </Grid>
@@ -115,7 +125,7 @@ export default function Login() {
                       fullWidth
                       error={Boolean(touched.password && errors.password)}
                       id="password-login"
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       value={values.password}
                       name="password"
                       onBlur={handleBlur}
@@ -129,22 +139,29 @@ export default function Login() {
                             edge="end"
                             size="large"
                           >
-                            {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+                            {showPassword ? (
+                              <VisibilityOutlinedIcon />
+                            ) : (
+                              <VisibilityOffOutlinedIcon />
+                            )}
                           </IconButton>
                         </InputAdornment>
                       }
                       placeholder="Ingresa tu contraseña..."
                     />
                     {touched.password && errors.password && (
-                      <FormHelperText error>
-                        {errors.password}
-                      </FormHelperText>
+                      <FormHelperText error>{errors.password}</FormHelperText>
                     )}
                   </Stack>
                 </Grid>
 
                 <Grid item xs={12} sx={{ mt: -1 }}>
-                  <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    spacing={2}
+                  >
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -155,9 +172,18 @@ export default function Login() {
                           size="small"
                         />
                       }
-                      label={<Typography variant="h6">Mantener sesión iniciada</Typography>}
+                      label={
+                        <Typography variant="h6">
+                          Mantener sesión iniciada
+                        </Typography>
+                      }
                     />
-                    <Link variant="h6" component={RouterLink} to="/password-recovery" color="text.primary">
+                    <Link
+                      variant="h6"
+                      component={RouterLink}
+                      to="/password-recovery"
+                      color="text.primary"
+                    >
                       ¿Olvidaste tu contraseña?
                     </Link>
                   </Stack>
