@@ -3,8 +3,7 @@ import {
   Box,
   Button,
   Card,
-  ImageList,
-  ImageListItem,
+  LinearProgress,
   Paper,
   Stack,
   Toolbar,
@@ -12,35 +11,30 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-
-import { useEffect, useState } from "react";
-import { ClientsService } from "../../services/clients.service";
+import { useState, useRef } from "react";
 import ClientSelect from "../../components/ClientsSelect";
+import { FilePresentOutlined, SendOutlined } from "@mui/icons-material";
+
+import ImgViewer from "../../components/ImgViewer/ImgViewer";
+import { FilesService } from "../../services/files.service";
 
 export default function FileUploader() {
-  const [clientSelected, setClient] = useState("");
-
+  const [clientSelected, setClient] = useState(null);
   const [error, setError] = useState({ active: false, message: "" });
   const [filesDate, setFilesDate] = useState(
     dayjs()
       .set("month", new Date().getMonth())
       .set("year", new Date().getFullYear())
   );
-
   const [filesUploaded, setFilesUploaded] = useState([]);
-
-  const handleSelectClient = (event) => {
-    setClient(event.target.value);
-  };
+  const [isLoading, setIsLoading] = useState(false);
+  const [uploadCompleted, setUploadCompleted] = useState(false);
 
   const handleDateChange = (date) => {
-    console.log(date);
     setFilesDate(date);
-    setRefreshing(true);
   };
 
   const handleChangeFiles = (event) => {
-    console.log(event.target.files);
     if (!event.target.files.length) {
       setError({
         active: true,
@@ -48,17 +42,88 @@ export default function FileUploader() {
       });
       return;
     }
-    const files = filesUploaded.length ? [...filesUploaded] : [];
 
+    const files = filesUploaded.length ? [...filesUploaded] : [];
     for (const file of event.target.files) {
-      files.push({ file, src: URL.createObjectURL(file) });
+      const index = files.findIndex(
+        (fileParsed) => fileParsed.file.name === file.name
+      );
+
+      if (index === -1) {
+        files.push({ file, src: URL.createObjectURL(file) });
+      }
     }
-    console.log(files);
     setFilesUploaded(files);
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!clientSelected) {
+      setError({
+        active: true,
+        message: "Por favor seleccione un cliente",
+      });
+      return;
+    }
+
+    setError({ active: false, message: "" });
+    const formData = new FormData();
+    for (const file of filesUploaded) {
+      formData.append("files", file.file, file.file.name);
+    }
+
+    setIsLoading(true);
+    console.log({
+      clientSelected,
+      formData,
+      month: filesDate.month() + 1,
+      year: filesDate.year(),
+    });
+
+    // Display the values
+    for (const value of formData.values()) {
+      console.log(value);
+    }
+    try {
+      const response = await FilesService().upload({
+        clientId: clientSelected,
+        formData,
+        month: filesDate.month() + 1,
+        year: filesDate.year(),
+      });
+      if (response.status === 201) {
+        setIsLoading(false);
+        setFilesUploaded([]);
+        setUploadCompleted(true);
+        setTimeout(() => {
+          setUploadCompleted(false);
+        }, 2000);
+      }
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+      setError({
+        active: true,
+        message: error.message,
+      });
+    }
+  };
+
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%" }}>
+        {isLoading ? (
+          <Box sx={{ width: "100%" }}>
+            <LinearProgress />
+          </Box>
+        ) : undefined}
+
+        {uploadCompleted ? (
+          <Box sx={{ width: "100%" }}>
+            <Alert severity="success">Archivos subidos con éxito</Alert>
+          </Box>
+        ) : undefined}
+
         <Toolbar sx={{ mb: "20px" }}>
           <Typography
             variant="h6"
@@ -68,14 +133,12 @@ export default function FileUploader() {
             Subir imagenes
           </Typography>
         </Toolbar>
-
         {error.active ? (
           <Alert severity="error">{error.message}</Alert>
         ) : undefined}
-
-        <Card sx={{ border: "1px solid red" }}>
+        <Card sx={{ p: 3 }}>
           <Stack spacing={3}>
-            <ClientSelect setError={setError} />
+            <ClientSelect setError={setError} setClient={setClient} />
 
             <DatePicker
               label={"Fecha"}
@@ -83,42 +146,44 @@ export default function FileUploader() {
               value={filesDate}
               onAccept={handleDateChange}
             />
-            <Button
-              variant="contained"
-              component="label"
-              sx={{ border: "2px solid red" }}
-            >
-              Select files
-              <input
-                hidden
-                accept="image/*"
-                multiple
-                type="file"
-                id="files-selected"
-                onChange={handleChangeFiles}
-              />
-            </Button>
+
+            <Stack spacing={4} direction="row">
+              <Button
+                variant="contained"
+                component="label"
+                color="secondary"
+                endIcon={<FilePresentOutlined />}
+                disabled={isLoading}
+              >
+                Select files
+                <input
+                  hidden
+                  accept="image/*"
+                  multiple
+                  type="file"
+                  id="files-selected"
+                  onChange={handleChangeFiles}
+                />
+              </Button>
+
+              <Button
+                variant="contained"
+                component="label"
+                disabled={filesUploaded.length === 0 || isLoading}
+                endIcon={<SendOutlined />}
+                onClick={handleSubmit}
+              >
+                Subir archivos
+                <input hidden id="submit-files" type="submit" />
+              </Button>
+            </Stack>
           </Stack>
         </Card>
 
-        {filesUploaded.length ? (
-          <ImageList
-            sx={{ width: "100%", height: "100%" }}
-            cols={3}
-            rowHeight={164}
-          >
-            {filesUploaded.map((item) => (
-              <ImageListItem key={item.file.name}>
-                <img
-                  src={`${item.src}`}
-                  srcSet={`${item.src}`}
-                  alt={item.file.name}
-                  loading="lazy"
-                />
-              </ImageListItem>
-            ))}
-          </ImageList>
-        ) : undefined}
+        <ImgViewer
+          filesUploaded={filesUploaded}
+          setFilesUploaded={setFilesUploaded}
+        />
       </Paper>
     </Box>
   );
