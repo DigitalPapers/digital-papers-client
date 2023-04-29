@@ -13,7 +13,11 @@ import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { useState, useRef } from "react";
 import ClientSelect from "../../components/ClientsSelect";
-import { FilePresentOutlined, SendOutlined } from "@mui/icons-material";
+import {
+  CameraAltOutlined,
+  FilePresentOutlined,
+  SendOutlined,
+} from "@mui/icons-material";
 
 import ImgViewer from "../../components/ImgViewer/ImgViewer";
 import { FilesService } from "../../services/files.service";
@@ -161,6 +165,25 @@ export default function FileUploader() {
                   accept="image/*"
                   multiple
                   type="file"
+                  id="files-selected"
+                  onChange={handleChangeFiles}
+                />
+              </Button>
+
+              <Button
+                variant="contained"
+                component="label"
+                color="primary"
+                endIcon={<CameraAltOutlined />}
+                disabled={isLoading}
+              >
+                Capturar
+                <input
+                  hidden
+                  accept="image/*"
+                  multiple
+                  type="file"
+                  capture="camera"
                   id="files-selected"
                   onChange={handleChangeFiles}
                 />
