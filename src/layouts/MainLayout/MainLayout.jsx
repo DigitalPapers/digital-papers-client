@@ -5,9 +5,9 @@ import { useAuth } from "../../hooks/AuthProvider";
 import { useState } from "react";
 
 import HeaderAppBar from "../../components/AppBar";
-import DrawerStyledComponent from "../../components/Navigation";
+import SideBar from "../../components/SideBar/SideBar.jsx";
 import Copyright from "../../components/Copyright";
-import MenuItems from "../../components/Navigation/MenuItems";
+import MenuItems from "../../components/SideBar/MenuItems";
 
 const drawerWidth = 260;
 
@@ -31,10 +31,10 @@ export default function MainLayout() {
         toggleDrawer={toggleDrawer}
         open={open}
       />
-      <DrawerStyledComponent open={open} toggleDrawer={toggleDrawer}>
+      <SideBar open={open} toggleDrawer={toggleDrawer}>
         <Divider />
         <MenuItems />
-      </DrawerStyledComponent>
+      </SideBar>
       <Box
         component="main"
         sx={{

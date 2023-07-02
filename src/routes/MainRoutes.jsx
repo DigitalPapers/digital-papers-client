@@ -1,9 +1,7 @@
 import MainLayout from "../layouts/MainLayout/MainLayout";
-import Home from "../pages/Home";
 import Customers from "../pages/Customers";
 import { Files } from "../pages/Files";
-import { ClientsService } from "../services/clients.service";
-import FileUploader from "../pages/FileUploader/FileUploader";
+import FilesUpload from "../pages/FileUploader/FilesUpload";
 
 const MainRoutes = {
   path: "/",
@@ -11,7 +9,7 @@ const MainRoutes = {
   children: [
     {
       path: "/",
-      element: <Home />,
+      element: <FilesUpload />,
     },
     {
       path: "/customers",
@@ -20,10 +18,6 @@ const MainRoutes = {
     {
       path: "/customers/:id/files",
       element: <Files />,
-    },
-    {
-      path: "/customers/files/upload",
-      element: <FileUploader />,
     },
   ],
 };

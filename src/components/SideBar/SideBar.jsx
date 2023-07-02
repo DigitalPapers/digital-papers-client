@@ -31,10 +31,10 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-export default function DrawerStyledComponent({
+export default function SideBar({
   open,
   children,
-  toggleDrawer,
+  toggleDrawer,s
 }) {
   return (
     <>

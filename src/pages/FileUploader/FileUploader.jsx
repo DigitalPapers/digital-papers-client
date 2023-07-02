@@ -19,10 +19,14 @@ import {
   SendOutlined,
 } from "@mui/icons-material";
 
-import ImgViewer from "../../components/ImgViewer/ImgViewer";
 import { FilesService } from "../../services/files.service";
 
-export default function FileUploader() {
+export default function FileUploader({
+  filesUploaded,
+  setFilesUploaded,
+  handleChangeFiles,
+  children,
+}) {
   const [clientSelected, setClient] = useState(null);
   const [error, setError] = useState({ active: false, message: "" });
   const [filesDate, setFilesDate] = useState(
@@ -30,34 +34,13 @@ export default function FileUploader() {
       .set("month", new Date().getMonth())
       .set("year", new Date().getFullYear())
   );
-  const [filesUploaded, setFilesUploaded] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadCompleted, setUploadCompleted] = useState(false);
 
+  console.log("ComponentRerendered? Component");
+
   const handleDateChange = (date) => {
     setFilesDate(date);
-  };
-
-  const handleChangeFiles = (event) => {
-    if (!event.target.files.length) {
-      setError({
-        active: true,
-        message: "Por favor selecciona al menos un archivo",
-      });
-      return;
-    }
-
-    const files = filesUploaded.length ? [...filesUploaded] : [];
-    for (const file of event.target.files) {
-      const index = files.findIndex(
-        (fileParsed) => fileParsed.file.name === file.name
-      );
-
-      if (index === -1) {
-        files.push({ file, src: URL.createObjectURL(file) });
-      }
-    }
-    setFilesUploaded(files);
   };
 
   const handleSubmit = async (event) => {
@@ -121,13 +104,11 @@ export default function FileUploader() {
             <LinearProgress />
           </Box>
         ) : undefined}
-
         {uploadCompleted ? (
           <Box sx={{ width: "100%" }}>
             <Alert severity="success">Archivos subidos con éxito</Alert>
           </Box>
         ) : undefined}
-
         <Toolbar sx={{ mb: "20px" }}>
           <Typography
             variant="h6"
@@ -180,11 +161,10 @@ export default function FileUploader() {
                 Capturar
                 <input
                   hidden
-                  accept="image/*"
-                  multiple
                   type="file"
+                  accept="image/*"
                   capture="camera"
-                  id="files-selected"
+                  id="captured-elements"
                   onChange={handleChangeFiles}
                 />
               </Button>
@@ -203,10 +183,7 @@ export default function FileUploader() {
           </Stack>
         </Card>
 
-        <ImgViewer
-          filesUploaded={filesUploaded}
-          setFilesUploaded={setFilesUploaded}
-        />
+        {children}
       </Paper>
     </Box>
   );
