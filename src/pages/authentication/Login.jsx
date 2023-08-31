@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { Link as RouterLink } from "react-router-dom";
+import * as React from 'react';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import { Link as RouterLink } from 'react-router-dom';
 // material-ui
 import {
   Button,
@@ -19,25 +19,27 @@ import {
   OutlinedInput,
   Stack,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
-import { useAuth } from "../../hooks/AuthProvider";
-import Copyright from "../../components/Copyright";
+import Copyright from '../../components/Copyright';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useLocalStorage } from '../../hooks/useLocalStorage.js';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .email("Debe ser un correo valido")
+    .email('Debe ser un correo valido')
     .max(255)
-    .required("Email es requerido"),
-  password: Yup.string().max(255).required("Contraseña es requerido"),
+    .required('Email es requerido'),
+  password: Yup.string().max(255).required('Contraseña es requerido'),
 });
 
 export default function Login() {
-  const { login } = useAuth();
+  const { loginWithRedirect, user: userAuth } = useAuth0();
+  const [, setUser] = useLocalStorage('user', {});
   const [checked, setChecked] = React.useState(false);
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -54,8 +56,13 @@ export default function Login() {
     try {
       setStatus({ success: false });
       setSubmitting(true);
-      console.log("Values form", values);
-      login({ email: values.email, password: values.password });
+      console.log('Values form', values);
+      loginWithRedirect().then(() => {
+        console.log('Login started');
+        setUser(userAuth);
+        setStatus({ success: true });
+        setSubmitting(false);
+      });
     } catch (err) {
       setStatus({ success: false });
       setErrors({ submit: err.message });
@@ -68,12 +75,12 @@ export default function Login() {
       <Box
         sx={{
           marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -81,8 +88,8 @@ export default function Login() {
         </Typography>
         <Formik
           initialValues={{
-            email: "pruebadashboard@fromchiapas.dev",
-            password: "pruebaDashboard",
+            email: 'pruebadashboard@fromchiapas.dev',
+            password: 'pruebaDashboard',
             submit: null,
           }}
           validationSchema={validationSchema}
@@ -125,7 +132,7 @@ export default function Login() {
                       fullWidth
                       error={Boolean(touched.password && errors.password)}
                       id="password-login"
-                      type={showPassword ? "text" : "password"}
+                      type={showPassword ? 'text' : 'password'}
                       value={values.password}
                       name="password"
                       onBlur={handleBlur}

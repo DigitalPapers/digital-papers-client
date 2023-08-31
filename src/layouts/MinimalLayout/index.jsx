@@ -1,15 +1,13 @@
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/AuthProvider";
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export default function MinimalLayout() {
-  const { user } = useAuth()
+  const { isAuthenticated } = useAuth0();
 
-  if (user) {
-    console.log('Minimal layout there is  authenticated')
-    return <Navigate to={'/'}></Navigate>
+  if (isAuthenticated) {
+    console.log('Minimal layout there is  authenticated');
+    return <Navigate to={'/'}></Navigate>;
   }
 
-  return (
-    <Outlet />
-  )
+  return <Outlet />;
 }
