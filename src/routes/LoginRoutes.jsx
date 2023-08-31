@@ -1,5 +1,5 @@
-import MinimalLayout from "../layouts/MinimalLayout";
-import Login from "../pages/authentication/Login";
+import MinimalLayout from '../layouts/MinimalLayout';
+import Login from '../pages/authentication/Login';
 
 const LoginRoutes = {
   path: '/',
@@ -7,9 +7,9 @@ const LoginRoutes = {
   children: [
     {
       path: 'login',
-      element: <Login />
+      element: <Login />,
     },
-  ]
-}
+  ],
+};
 
 export default LoginRoutes;

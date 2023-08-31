@@ -12,15 +12,15 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { ClientsService } from "../services/clients.service";
-import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
-import { RefreshRounded } from "@mui/icons-material";
-import { FilesService } from "../services/files.service";
-import { DatePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
+} from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { ClientsService } from '../services/clients.service';
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+import { RefreshRounded } from '@mui/icons-material';
+import { FilesService } from '../services/files.service';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
 
 function ListPagination({
   pageCount,
@@ -30,7 +30,7 @@ function ListPagination({
   handlePageSizeChange,
 }) {
   return (
-    <Box sx={{ flex: "1 1 100%" }}>
+    <Box sx={{ flex: '1 1 100%' }}>
       <TablePagination
         component="div"
         count={pageCount}
@@ -50,8 +50,8 @@ export function Files() {
   const [data, setData] = useState([]);
   const [filesDate, setFilesDate] = useState(
     dayjs()
-      .set("month", new Date().getMonth())
-      .set("year", new Date().getFullYear())
+      .set('month', new Date().getMonth())
+      .set('year', new Date().getFullYear()),
   );
   const [loading, setLoading] = useState(true);
   const [month, setMonth] = useState(new Date().getMonth() + 1);
@@ -122,10 +122,10 @@ export function Files() {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%" }}>
+    <Box sx={{ width: '100%' }}>
+      <Paper sx={{ width: '100%' }}>
         {loading ? (
-          <Box sx={{ width: "100%" }}>
+          <Box sx={{ width: '100%' }}>
             <LinearProgress />
           </Box>
         ) : undefined}
@@ -138,8 +138,8 @@ export function Files() {
           </Button>
 
           <DatePicker
-            label={"Fecha"}
-            views={["month", "year"]}
+            label={'Fecha'}
+            views={['month', 'year']}
             value={filesDate}
             onAccept={handleDateChange}
           />
@@ -152,7 +152,7 @@ export function Files() {
           }}
         >
           <Typography
-            sx={{ flex: "1 1 100%" }}
+            sx={{ flex: '1 1 100%' }}
             variant="h6"
             id="tableTitle"
             component="div"
@@ -177,7 +177,7 @@ export function Files() {
         {data?.files?.length > 0 ? (
           <>
             <ImageList
-              sx={{ width: "100%" }}
+              sx={{ width: '100%' }}
               variant="masonry"
               cols={data.files.length > 2 ? 3 : 1}
               gap={3}
@@ -202,7 +202,7 @@ export function Files() {
           </>
         ) : (
           <>
-            <Box sx={{ width: "100%", mt: 5, padding: 2 }}>
+            <Box sx={{ width: '100%', mt: 5, padding: 2 }}>
               <Typography>No hay archivos para mostrar</Typography>
             </Box>
           </>

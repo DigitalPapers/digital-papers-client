@@ -4,10 +4,8 @@ import FileUploader from "./FileUploader";
 
 export default function FilesUpload() {
   const [filesUploaded, setFilesUploaded] = useState([]);
-  console.log("ComponentRerendered? Page", filesUploaded);
   const handleChangeFiles = (event) => {
-    console.log("Entro al handleChangeFiles");
-    console.log(event.target.files);
+
     if (!event.target.files.length) {
       setError({
         active: true,

@@ -1,9 +1,9 @@
-import axios from "axios";
-import { API_BASE_URL } from "../utils/consts";
-import { isNotEmptyString } from "../utils/validators/isNotEmptyString";
+import axios from 'axios';
+import { API_BASE_URL } from '../utils/consts';
+import { isNotEmptyString } from '../utils/validators/isNotEmptyString';
 
 export function ClientsService() {
-  async function list({ pageSize = 10, pageIndex = 1, search = "" }) {
+  async function list({ pageSize = 10, pageIndex = 1, search = '' }) {
     let baseUrl = `${API_BASE_URL}/users?page=${++pageIndex}&pageSize=${pageSize}`;
 
     if (isNotEmptyString(search)) {
@@ -14,7 +14,7 @@ export function ClientsService() {
   }
 
   async function get({ userId }) {
-    console.log("Request", userId);
+    console.log('Request', userId);
 
     const response = await axios.get(`${API_BASE_URL}/users/${userId}`);
     return response.data;

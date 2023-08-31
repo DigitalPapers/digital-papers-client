@@ -1,25 +1,25 @@
-import { Box } from "@mui/material";
-import React from "react";
-import EnhancedTable from "../components/table/Table";
-import { ClientsService } from "../services/clients.service";
+import { Box } from '@mui/material';
+import React from 'react';
+import EnhancedTable from '../components/table/Table';
+import { ClientsService } from '../services/clients.service';
 
 function Customers() {
   const columns = React.useMemo(
     () => [
       {
-        Header: "ID",
-        accessor: "id",
+        Header: 'ID',
+        accessor: 'id',
       },
       {
-        Header: "RFC",
-        accessor: "rfc",
+        Header: 'RFC',
+        accessor: 'rfc',
       },
       {
-        Header: "Email",
-        accessor: "email",
+        Header: 'Email',
+        accessor: 'email',
       },
     ],
-    []
+    [],
   );
 
   const [data, setData] = React.useState([]);
@@ -60,8 +60,8 @@ function Customers() {
         error={error}
         link={{
           isLink: true,
-          goToLink: ":id/files",
-          identifier: "id",
+          goToLink: ':id/files',
+          identifier: 'id',
         }}
       />
     </Box>

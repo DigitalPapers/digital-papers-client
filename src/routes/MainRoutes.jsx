@@ -1,22 +1,22 @@
-import MainLayout from "../layouts/MainLayout/MainLayout";
-import Customers from "../pages/Customers";
-import { Files } from "../pages/Files";
-import FilesUpload from "../pages/FileUploader/FilesUpload";
+import MainLayout from '../layouts/MainLayout/MainLayout';
+import Customers from '../pages/Customers';
+import { Files } from '../pages/Files';
+import FilesUpload from '../pages/FileUploader/FilesUpload';
 
 const MainRoutes = {
-  path: "/",
+  path: '/',
   element: <MainLayout />,
   children: [
     {
-      path: "/",
+      path: '/',
       element: <FilesUpload />,
     },
     {
-      path: "/customers",
+      path: '/customers',
       element: <Customers />,
     },
     {
-      path: "/customers/:id/files",
+      path: '/customers/:id/files',
       element: <Files />,
     },
   ],
