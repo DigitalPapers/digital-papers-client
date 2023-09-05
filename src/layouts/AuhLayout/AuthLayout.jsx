@@ -1,8 +1,31 @@
-import { useOutlet } from "react-router-dom";
-import { AuthProvider } from "../../hooks/AuthProvider";
+import { Outlet, useNavigate } from 'react-router-dom';
+import { Auth0Provider } from '@auth0/auth0-react';
 
 export function AuthLayout() {
-  const outlet = useOutlet();
+  const navigate = useNavigate();
+  const domain = import.meta.env.VITE_AUTH0_DOMAIN;
+  const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
+  const redirectUri = import.meta.env.VITE_AUTH0_CALLBACK_URL;
 
-  return <AuthProvider>{outlet}</AuthProvider>;
+  const onRedirectCallback = (appState) => {
+    console.log({ appState });
+    navigate(appState?.returnTo || window.location.pathname);
+  };
+
+  if (!(domain && clientId && redirectUri)) {
+    return null;
+  }
+
+  return (
+    <Auth0Provider
+      domain={domain}
+      clientId={clientId}
+      authorizationParams={{
+        redirect_uri: redirectUri,
+      }}
+      onRedirectCallback={onRedirectCallback}
+    >
+      <Outlet />
+    </Auth0Provider>
+  );
 }

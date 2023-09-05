@@ -1,22 +1,29 @@
-import Routes from "./routes";
-import { AuthProvider } from "./hooks/AuthProvider";
-import { CssBaseline } from "@mui/material";
+import { AppRoutes } from './routes/index.jsx';
+import { CssBaseline } from '@mui/material';
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import "dayjs/locale/es";
-const theme = createTheme();
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import 'dayjs/locale/es';
+import { red } from '@mui/material/colors';
 
-export default function App() {
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#556cd6',
+    },
+    secondary: {
+      main: '#19857b',
+    },
+    error: {
+      main: red.A400,
+    },
+  },
+});
+
+export function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AuthProvider>
-        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
-          <Routes />
-        </LocalizationProvider>
-      </AuthProvider>
+      <AppRoutes />
     </ThemeProvider>
   );
 }

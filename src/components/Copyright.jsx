@@ -1,5 +1,5 @@
-import { Typography } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 export default function Copyright(props) {
   return (
@@ -9,12 +9,12 @@ export default function Copyright(props) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
+      {'Copyright © '}
       <Link color="inherit" href="https://fromchiapas.dev">
         FromChiapasDev
-      </Link>{" "}
+      </Link>{' '}
       {new Date().getFullYear()}
-      {"."}
+      {'.'}
     </Typography>
   );
 }

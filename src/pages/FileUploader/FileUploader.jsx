@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import ClientSelect from "../../components/ClientsSelect";
 import {
   CameraAltOutlined,
@@ -38,6 +38,7 @@ export default function FileUploader({
   const [uploadCompleted, setUploadCompleted] = useState(false);
 
   console.log("ComponentRerendered? Component");
+  console.log('filesUploaded', filesUploaded);
 
   const handleDateChange = (date) => {
     setFilesDate(date);
