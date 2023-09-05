@@ -5,19 +5,19 @@ import FilesUpload from '../pages/FileUploader/FilesUpload';
 import { routesMap } from './routes-map.js';
 
 const MainRoutes = {
-  path: routesMap.get('home').path,
+  path: routesMap.get('dashboard').get('home').path,
   element: <MainLayout />,
   children: [
     {
-      path: routesMap.get('home').path,
+      path: routesMap.get('dashboard').get('home').path,
       element: <FilesUpload />,
     },
     {
-      path: routesMap.get('clients').get('list').path,
+      path: routesMap.get('dashboard').get('list').path,
       element: <Customers />,
     },
     {
-      path: routesMap.get('clients').get('list-docs').path,
+      path: routesMap.get('dashboard').get('list-docs').path,
       element: <Files />,
     },
   ],

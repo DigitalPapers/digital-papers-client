@@ -17,7 +17,7 @@ export function Login() {
   const handleLoginClick = async () => {
     await loginWithRedirect({
       appState: {
-        returnTo: routesMap.get('auth').get('login'),
+        returnTo: routesMap.get('dashboard').get('home').path,
       },
     });
   };

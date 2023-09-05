@@ -11,7 +11,7 @@ export const mainListItems = (
   <>
     <Link
       component={RouterLink}
-      to={routesMap.get('home').path}
+      to={routesMap.get('dashboard').get('home').path}
       underline="none"
       color="inherit"
     >
@@ -24,7 +24,7 @@ export const mainListItems = (
     </Link>
     <Link
       component={RouterLink}
-      to={routesMap.get('clients').get('list').path}
+      to={routesMap.get('dashboard').get('list').path}
       underline="none"
       color="inherit"
     >

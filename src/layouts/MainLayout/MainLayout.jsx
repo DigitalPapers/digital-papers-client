@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { Box, Toolbar, Divider, Container } from '@mui/material';
 
 import { useState } from 'react';
@@ -7,22 +7,19 @@ import HeaderAppBar from '../../components/AppBar';
 import SideBar from '../../components/SideBar/SideBar.jsx';
 import Copyright from '../../components/Copyright';
 import MenuItems from '../../components/SideBar/MenuItems';
-import { useAuth0 } from '@auth0/auth0-react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+import { useAuth0 } from '@auth0/auth0-react';
+import { PageLoader } from '../../pages/PageLoader.jsx';
 
 const drawerWidth = 260;
 
 export default function MainLayout() {
-  const { isAuthenticated, user, isLoading } = useAuth0();
-
-  console.log('MainLayout', isAuthenticated, user, isLoading);
-  if (!isAuthenticated) {
-    return <Navigate to={'/'} />;
-  }
-
   const [open, setOpen] = useState(false);
-
+  const { isLoading } = useAuth0();
+  if (isLoading) {
+    return <PageLoader />;
+  }
   const toggleDrawer = () => {
     setOpen(!open);
   };
