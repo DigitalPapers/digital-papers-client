@@ -8,18 +8,18 @@ import {
   Stack,
   Toolbar,
   Typography,
-} from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
-import { useState } from "react";
-import ClientSelect from "../../components/ClientsSelect";
+} from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
+import dayjs from 'dayjs';
+import { useState } from 'react';
+import ClientSelect from '../../components/ClientsSelect';
 import {
   CameraAltOutlined,
   FilePresentOutlined,
   SendOutlined,
-} from "@mui/icons-material";
+} from '@mui/icons-material';
 
-import { FilesService } from "../../services/files.service";
+import { FilesService } from '../../services/files.service';
 
 export default function FileUploader({
   filesUploaded,
@@ -28,17 +28,14 @@ export default function FileUploader({
   children,
 }) {
   const [clientSelected, setClient] = useState(null);
-  const [error, setError] = useState({ active: false, message: "" });
+  const [error, setError] = useState({ active: false, message: '' });
   const [filesDate, setFilesDate] = useState(
     dayjs()
-      .set("month", new Date().getMonth())
-      .set("year", new Date().getFullYear())
+      .set('month', new Date().getMonth())
+      .set('year', new Date().getFullYear()),
   );
   const [isLoading, setIsLoading] = useState(false);
   const [uploadCompleted, setUploadCompleted] = useState(false);
-
-  console.log("ComponentRerendered? Component");
-  console.log('filesUploaded', filesUploaded);
 
   const handleDateChange = (date) => {
     setFilesDate(date);
@@ -49,29 +46,19 @@ export default function FileUploader({
     if (!clientSelected) {
       setError({
         active: true,
-        message: "Por favor seleccione un cliente",
+        message: 'Por favor seleccione un cliente',
       });
       return;
     }
 
-    setError({ active: false, message: "" });
+    setError({ active: false, message: '' });
     const formData = new FormData();
     for (const file of filesUploaded) {
-      formData.append("files", file.file, file.file.name);
+      formData.append('files', file.file, file.file.name);
     }
 
     setIsLoading(true);
-    console.log({
-      clientSelected,
-      formData,
-      month: filesDate.month() + 1,
-      year: filesDate.year(),
-    });
 
-    // Display the values
-    for (const value of formData.values()) {
-      console.log(value);
-    }
     try {
       const response = await FilesService().upload({
         clientId: clientSelected,
@@ -98,27 +85,20 @@ export default function FileUploader({
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%" }}>
+    <Box sx={{ width: '100%' }}>
+      <Paper sx={{ width: '100%' }}>
         {isLoading ? (
-          <Box sx={{ width: "100%" }}>
+          <Box sx={{ width: '100%' }}>
             <LinearProgress />
           </Box>
         ) : undefined}
+
         {uploadCompleted ? (
-          <Box sx={{ width: "100%" }}>
+          <Box sx={{ width: '100%' }}>
             <Alert severity="success">Archivos subidos con éxito</Alert>
           </Box>
         ) : undefined}
-        <Toolbar sx={{ mb: "20px" }}>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, mb: "10" }}
-          >
-            Subir imagenes
-          </Typography>
-        </Toolbar>
+
         {error.active ? (
           <Alert severity="error">{error.message}</Alert>
         ) : undefined}
@@ -127,21 +107,24 @@ export default function FileUploader({
             <ClientSelect setError={setError} setClient={setClient} />
 
             <DatePicker
-              label={"Fecha"}
-              views={["month", "year"]}
+              label={'Fecha'}
+              views={['month', 'year']}
               value={filesDate}
               onAccept={handleDateChange}
             />
 
-            <Stack spacing={4} direction="row">
+            <Stack
+              spacing={{ xs: 1, sm: 2, md: 4 }}
+              direction={{ xs: 'column', sm: 'row' }}
+            >
               <Button
-                variant="contained"
+                variant="outlined"
                 component="label"
                 color="secondary"
                 endIcon={<FilePresentOutlined />}
                 disabled={isLoading}
               >
-                Select files
+                Selecciona o captura
                 <input
                   hidden
                   accept="image/*"
@@ -155,25 +138,7 @@ export default function FileUploader({
               <Button
                 variant="contained"
                 component="label"
-                color="primary"
-                endIcon={<CameraAltOutlined />}
-                disabled={isLoading}
-              >
-                Capturar
-                <input
-                  hidden
-                  type="file"
-                  accept="image/*"
-                  capture="camera"
-                  id="captured-elements"
-                  onChange={handleChangeFiles}
-                />
-              </Button>
-
-              <Button
-                variant="contained"
-                component="label"
-                disabled={filesUploaded.length === 0 || isLoading}
+                disabled={!filesUploaded.length || isLoading}
                 endIcon={<SendOutlined />}
                 onClick={handleSubmit}
               >

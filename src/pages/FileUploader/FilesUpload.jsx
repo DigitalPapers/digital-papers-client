@@ -1,16 +1,11 @@
-import { useState } from "react";
-import ImgViewer from "../../components/ImgViewer/ImgViewer";
-import FileUploader from "./FileUploader";
+import { useState } from 'react';
+import ImgViewer from '../../components/ImgViewer/ImgViewer';
+import FileUploader from './FileUploader';
 
 export default function FilesUpload() {
   const [filesUploaded, setFilesUploaded] = useState([]);
   const handleChangeFiles = (event) => {
-
     if (!event.target.files.length) {
-      setError({
-        active: true,
-        message: "Por favor selecciona al menos un archivo",
-      });
       return;
     }
 
@@ -18,7 +13,7 @@ export default function FilesUpload() {
 
     for (const file of event.target.files) {
       const index = files.findIndex(
-        (fileParsed) => fileParsed.file.name === file.name
+        (fileParsed) => fileParsed.file.name === file.name,
       );
 
       if (index === -1) {
